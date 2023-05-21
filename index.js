@@ -39,19 +39,8 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/category", async (req, res) => {
-      // const decoded = req.decoded;
-      // console.log('came back after verify', decoded)
-
-      // if(decoded.email !== req.query.email){
-      //     return res.status(403).send({error: 1, message: 'forbidden access'})
-      // }
-      console.log(req.query.category);
-
-      let query = {};
-      if (req.query?.category) {
-        query = { sub_category: req.query.category };
-      }
+    app.get("/category/:category", async (req, res) => {
+      const query = {sub_category :req.params.category }
       const result = await carCollection.find(query).toArray();
       res.send(result);
     });
@@ -64,6 +53,14 @@ async function run() {
       }
       const result = await carCollection.find(query).toArray();
       res.send(result);
+
+      app.post('/newcar', async (req, res) => {
+        const newCar = req.body;
+        console.log(newCar);
+        // const result = await carCollection.insertOne(newCar);
+        // res.send(result);
+    });
+
   })
 
     await client.db("admin").command({ ping: 1 });
