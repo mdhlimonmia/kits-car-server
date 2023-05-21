@@ -28,9 +28,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    // client.connect();
-    // Send a ping to confirm a successful connection
     const carCollection = client.db("kitsCar").collection("cars");
 
     app.get("/cars", async (req, res) => {
@@ -71,15 +68,14 @@ async function run() {
       }
       const result = await carCollection.find(query).toArray();
       res.send(result);
-
-      app.post('/newcar', async (req, res) => {
-        const newCar = req.body;
-        console.log(newCar);
-        // const result = await carCollection.insertOne(newCar);
-        // res.send(result);
-    });
-
   })
+  
+  app.post('/addcar', async (req, res) => {
+    const newCar = req.body;
+    console.log(newCar);
+    const result = await carCollection.insertOne(newCar);
+    res.send(result);
+});
 
     await client.db("admin").command({ ping: 1 });
     console.log(
